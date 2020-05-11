@@ -39,14 +39,14 @@ public class MariaaApplication implements CommandLineRunner {
 		Product cleaningLady = new Product(null, "Faxineira", 120.00);
 		
 		 // ASSOCIAÇÕES 
+		scheduled.getProducts().addAll(Arrays.asList(diarist, cooker, washerwoman, cleaningLady));
+		noScheduled.getProducts().addAll(Arrays.asList(diarist, cooker, washerwoman, cleaningLady));
 		
 		cooker.getCategories().addAll(Arrays.asList(scheduled, noScheduled));
 		diarist.getCategories().addAll(Arrays.asList(scheduled, noScheduled));
 		washerwoman.getCategories().addAll(Arrays.asList(scheduled, noScheduled));
 		cleaningLady.getCategories().addAll(Arrays.asList(scheduled, noScheduled));
 		
-		scheduled.getProducts().addAll(Arrays.asList(diarist, cooker, washerwoman, cleaningLady));
-		noScheduled.getProducts().addAll(Arrays.asList(diarist, cooker, washerwoman, cleaningLady));
 		
 		 // COMMIT NO BANCO 
 		
