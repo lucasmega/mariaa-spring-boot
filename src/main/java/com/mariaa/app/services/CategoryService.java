@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mariaa.app.domain.Category;
 import com.mariaa.app.repositories.CategoryRepository;
+import com.mariaa.app.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoryService {
@@ -16,6 +17,6 @@ public class CategoryService {
 	
 	public Category find(Integer id) {
 		Optional<Category> obj = categoryRepository.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Categoria de código: " + id + " não encontrada, Tipo: " + Category.class.getName()));
 	}
 }

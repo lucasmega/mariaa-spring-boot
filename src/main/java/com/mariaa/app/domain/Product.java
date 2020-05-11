@@ -25,7 +25,6 @@ public class Product implements Serializable {
 	private Double price;
 	
 	@ManyToMany
-	
 	@JoinTable(name = "PRODUCT_CATEGORY", 
 		joinColumns = @JoinColumn(name="PRODUCT_ID"),
 		inverseJoinColumns = @JoinColumn(name="CATEGORY_ID")
