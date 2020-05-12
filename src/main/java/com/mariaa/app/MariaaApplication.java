@@ -1,5 +1,6 @@
 package com.mariaa.app;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,20 @@ import com.mariaa.app.domain.Address;
 import com.mariaa.app.domain.Category;
 import com.mariaa.app.domain.City;
 import com.mariaa.app.domain.Client;
+import com.mariaa.app.domain.Order;
+import com.mariaa.app.domain.Payment;
+import com.mariaa.app.domain.PaymentByBillet;
+import com.mariaa.app.domain.PaymentByCard;
 import com.mariaa.app.domain.Product;
 import com.mariaa.app.domain.State;
 import com.mariaa.app.domain.enums.CustomerType;
+import com.mariaa.app.domain.enums.PaymentStatus;
 import com.mariaa.app.repositories.AddressRepository;
 import com.mariaa.app.repositories.CategoryRepository;
 import com.mariaa.app.repositories.CityRepository;
 import com.mariaa.app.repositories.ClientRepository;
+import com.mariaa.app.repositories.OrderRepository;
+import com.mariaa.app.repositories.PaymentRepository;
 import com.mariaa.app.repositories.ProductRepository;
 import com.mariaa.app.repositories.StateRepository;
 
@@ -42,7 +50,13 @@ public class MariaaApplication implements CommandLineRunner {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+	@Autowired
+	private OrderRepository orderRepository;
 	
+	@Autowired
+	private PaymentRepository paymentRepository;
+	
+	private static final Integer NUMBER_OF_INSTALLMENT = 0;
 	
 
 	public static void main(String[] args) {
@@ -51,6 +65,8 @@ public class MariaaApplication implements CommandLineRunner {
 	
 	
 	public void run(String... args) throws Exception {
+		
+		SimpleDateFormat sdt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
 		 // INSTANCIAS 
 		
@@ -71,8 +87,14 @@ public class MariaaApplication implements CommandLineRunner {
 		
 		Client mariaDaSilva = new Client(null, "Maria da Silva", "maria@mail.com", "42636730850", CustomerType.PERSON);
 		
-		Address ruaFlores = new Address(null, "Rua França", 45, "Casa 1", "Jd. Nações", "09941070", mariaDaSilva, diadema);
+		Address ruaFranca = new Address(null, "Rua França", 45, "Casa 1", "Jd. Nações", "09941070", mariaDaSilva, diadema);
 		Address avenidaMatos = new Address(null, "Avenida Matos", 105, "Sala 800", "Centro", "38777012", mariaDaSilva, campinas);
+		
+		Order orderOne = new Order(null, sdt.parse("12/05/2020 15:43"), mariaDaSilva, ruaFranca);
+		Order orderTwo = new Order(null, sdt.parse("06/04/2020 11:51"), mariaDaSilva, avenidaMatos);
+		
+		Payment paymentByCard = new PaymentByCard(null, PaymentStatus.SETTLED, orderOne, NUMBER_OF_INSTALLMENT);
+		Payment paymentByBillet = new PaymentByBillet(null, PaymentStatus.PENDING, orderTwo, sdt.parse("12/05/2020 23:59"), null);
 		
 		 // ASSOCIAÇÕES 
 		scheduled.getProducts().addAll(Arrays.asList(diarist, cooker, washerwoman, cleaningLady));
@@ -88,7 +110,12 @@ public class MariaaApplication implements CommandLineRunner {
 		
 		mariaDaSilva.getPhones().addAll(Arrays.asList("958640164", "985146857"));
 		
-		mariaDaSilva.getAdresses().addAll(Arrays.asList(ruaFlores, avenidaMatos));
+		mariaDaSilva.getAdresses().addAll(Arrays.asList(ruaFranca, avenidaMatos));
+		
+		orderOne.setPayment(paymentByCard);
+		orderTwo.setPayment(paymentByBillet);
+		
+		mariaDaSilva.getOrder().addAll(Arrays.asList(orderOne, orderTwo));
 		
 		 // COMMIT NO BANCO 
 		stateRepository.saveAll(Arrays.asList(saoPaulo, minasGerais));
@@ -96,6 +123,8 @@ public class MariaaApplication implements CommandLineRunner {
 		categoryRepository.saveAll(Arrays.asList(scheduled, noScheduled));
 		productRepository.saveAll(Arrays.asList(diarist, cooker, washerwoman, cleaningLady));
 		clientRepository.saveAll(Arrays.asList(mariaDaSilva));
-		addressRepository.saveAll(Arrays.asList(ruaFlores, avenidaMatos));
+		addressRepository.saveAll(Arrays.asList(ruaFranca, avenidaMatos));
+		orderRepository.saveAll(Arrays.asList(orderOne, orderTwo));
+		paymentRepository.saveAll(Arrays.asList(paymentByCard, paymentByBillet));
 	}
 }

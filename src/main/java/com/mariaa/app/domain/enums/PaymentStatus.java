@@ -1,13 +1,18 @@
 package com.mariaa.app.domain.enums;
 
-public enum CustomerType {
-	PERSON(1, "Pessoa Física"), 
-	LEGAL_PERSON(2, "Pessoa Jurídica");
+public enum PaymentStatus {
+	
+	PENDING(1, "Pendente"),
+	SETTLED(2, "Quitado"),
+	CANCELED(3, "Cancelado");
 	
 	private Integer code;
 	private String description;
 	
-	private CustomerType(Integer code, String description) {
+	private PaymentStatus() { }
+	
+	
+	private PaymentStatus(Integer code, String description) {
 		this.code = code;
 		this.description = description;
 	}
@@ -20,18 +25,23 @@ public enum CustomerType {
 		return description;
 	}
 	
-	public static CustomerType toEnum(Integer code) {
+	
+	public static PaymentStatus toEnum(Integer code) {
 		if (code == null) {
 			return null;
 		}
 		
-		for (CustomerType c : CustomerType.values()) {
-			if (code.equals(c.getCode())) {
-				return c;
+		for (PaymentStatus p : PaymentStatus.values()) {
+			if (code.equals(p.getCode())) {
+				return p;
 			}
 		}
 		
 		throw new IllegalArgumentException("Código " + code + " inválido!");
 	}
-
+	
+	
+	
+	
+	
 }
