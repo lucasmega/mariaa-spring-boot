@@ -2,6 +2,8 @@ package com.mariaa.app.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,6 +21,7 @@ import javax.persistence.Table;
 public class Order implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
@@ -33,6 +37,9 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="DELIVERY_ADDRESS_ID")
 	private Address address;
+	
+	@OneToMany(mappedBy="id.order")
+	private Set<OrderItem> orderItem = new HashSet<>();
 	
 	public Order() { }
 
@@ -83,6 +90,14 @@ public class Order implements Serializable {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+	
+	public Set<OrderItem> getOrderItem() {
+		return orderItem;
+	}
+
+	public void setOrderItem(Set<OrderItem> orderItem) {
+		this.orderItem = orderItem;
+	}
 
 	@Override
 	public int hashCode() {
@@ -108,7 +123,5 @@ public class Order implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }

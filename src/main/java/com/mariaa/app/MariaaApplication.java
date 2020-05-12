@@ -13,6 +13,7 @@ import com.mariaa.app.domain.Category;
 import com.mariaa.app.domain.City;
 import com.mariaa.app.domain.Client;
 import com.mariaa.app.domain.Order;
+import com.mariaa.app.domain.OrderItem;
 import com.mariaa.app.domain.Payment;
 import com.mariaa.app.domain.PaymentByBillet;
 import com.mariaa.app.domain.PaymentByCard;
@@ -24,6 +25,7 @@ import com.mariaa.app.repositories.AddressRepository;
 import com.mariaa.app.repositories.CategoryRepository;
 import com.mariaa.app.repositories.CityRepository;
 import com.mariaa.app.repositories.ClientRepository;
+import com.mariaa.app.repositories.OrderItemRepository;
 import com.mariaa.app.repositories.OrderRepository;
 import com.mariaa.app.repositories.PaymentRepository;
 import com.mariaa.app.repositories.ProductRepository;
@@ -56,7 +58,12 @@ public class MariaaApplication implements CommandLineRunner {
 	@Autowired
 	private PaymentRepository paymentRepository;
 	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+	
 	private static final Integer NUMBER_OF_INSTALLMENT = 0;
+	private static final Double DISCOUNT = 0.00;
+	private static final Integer AMOUNT = 1;
 	
 
 	public static void main(String[] args) {
@@ -69,7 +76,6 @@ public class MariaaApplication implements CommandLineRunner {
 		SimpleDateFormat sdt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
 		 // INSTANCIAS 
-		
 		Category scheduled = new Category(null, "Com agendamento");
 		Category noScheduled = new Category(null, "Sem agendamento");
 		
@@ -96,6 +102,10 @@ public class MariaaApplication implements CommandLineRunner {
 		Payment paymentByCard = new PaymentByCard(null, PaymentStatus.SETTLED, orderOne, NUMBER_OF_INSTALLMENT);
 		Payment paymentByBillet = new PaymentByBillet(null, PaymentStatus.PENDING, orderTwo, sdt.parse("12/05/2020 23:59"), null);
 		
+		OrderItem orderdiarist = new OrderItem(orderOne, diarist, DISCOUNT, AMOUNT, diarist.getPrice());
+		OrderItem orderCooker = new OrderItem(orderTwo, cooker, DISCOUNT, AMOUNT, cooker.getPrice());
+		OrderItem orderCleaningLady = new OrderItem(orderTwo, cleaningLady, DISCOUNT, AMOUNT, cleaningLady.getPrice());
+		
 		 // ASSOCIAÇÕES 
 		scheduled.getProducts().addAll(Arrays.asList(diarist, cooker, washerwoman, cleaningLady));
 		noScheduled.getProducts().addAll(Arrays.asList(diarist, cooker, washerwoman, cleaningLady));
@@ -117,6 +127,13 @@ public class MariaaApplication implements CommandLineRunner {
 		
 		mariaDaSilva.getOrder().addAll(Arrays.asList(orderOne, orderTwo));
 		
+		orderOne.getOrderItem().addAll(Arrays.asList(orderdiarist, orderCooker));
+		orderOne.getOrderItem().addAll(Arrays.asList(orderCleaningLady));
+		
+		diarist.getOrderItem().addAll(Arrays.asList(orderdiarist));
+		cooker.getOrderItem().addAll(Arrays.asList(orderCooker));
+		cleaningLady.getOrderItem().addAll(Arrays.asList(orderCleaningLady));
+		
 		 // COMMIT NO BANCO 
 		stateRepository.saveAll(Arrays.asList(saoPaulo, minasGerais));
 		cityRepository.saveAll(Arrays.asList(diadema, campinas, uberlandia));
@@ -126,5 +143,6 @@ public class MariaaApplication implements CommandLineRunner {
 		addressRepository.saveAll(Arrays.asList(ruaFranca, avenidaMatos));
 		orderRepository.saveAll(Arrays.asList(orderOne, orderTwo));
 		paymentRepository.saveAll(Arrays.asList(paymentByCard, paymentByBillet));
+		orderItemRepository.saveAll(Arrays.asList(orderdiarist, orderCooker, orderCleaningLady));
 	}
 }
