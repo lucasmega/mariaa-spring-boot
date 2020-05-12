@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mariaa.app.domain.enums.PaymentStatus;
 
 @Entity
@@ -11,6 +12,7 @@ public class PaymentByBillet extends Payment {
 	
 	private static final long serialVersionUID = 1L;
 	
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dueDate;
 	private Date payDay;
 	
