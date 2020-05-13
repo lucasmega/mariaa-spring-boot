@@ -1,6 +1,8 @@
 package com.mariaa.app.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mariaa.app.domain.Category;
+import com.mariaa.app.dto.CategoryDTO;
 import com.mariaa.app.services.CategoryService;
 
 @RestController
@@ -45,5 +48,12 @@ public class CategoryResource {
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		categoryService.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CategoryDTO>> findAll() {
+		List<Category> list = categoryService.findAll();
+		List<CategoryDTO> lisDTO = list.stream().map(element -> new CategoryDTO(element)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(lisDTO);
 	}
 }
