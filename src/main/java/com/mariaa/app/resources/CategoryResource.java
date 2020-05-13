@@ -15,29 +15,35 @@ import com.mariaa.app.domain.Category;
 import com.mariaa.app.services.CategoryService;
 
 @RestController
-@RequestMapping(value="/categories")
+@RequestMapping(value = "/categories")
 public class CategoryResource {
-	
+
 	@Autowired
 	private CategoryService categoryService;
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Category> find(@PathVariable Integer id) {
 		Category object = categoryService.find(id);
 		return ResponseEntity.ok().body(object);
 	}
-	
-	@RequestMapping(method=RequestMethod.POST)
+
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody Category object) {
 		object = categoryService.insert(object);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(object.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody Category object, @PathVariable Integer id) {
 		object.setId(id);
 		object = categoryService.update(object);
+		return ResponseEntity.noContent().build();
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		categoryService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 }
