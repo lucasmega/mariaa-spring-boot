@@ -79,6 +79,16 @@ public class MariaaApplication implements CommandLineRunner {
 		Category scheduled = new Category(null, "Com agendamento");
 		Category noScheduled = new Category(null, "Sem agendamento");
 		
+		Category cat1 = new Category(null, "NOME CATEGORIA");
+		Category cat2 = new Category(null, "NOME CATEGORIA");
+		Category cat3 = new Category(null, "NOME CATEGORIA");
+		Category cat4 = new Category(null, "NOME CATEGORIA");
+		Category cat5 = new Category(null, "NOME CATEGORIA");
+		Category cat6 = new Category(null, "NOME CATEGORIA");
+		Category cat7 = new Category(null, "NOME CATEGORIA");
+		Category cat8 = new Category(null, "NOME CATEGORIA");
+		
+		
 		Product diarist = new Product(null, "Diarista", 150.00);
 		Product cooker = new Product(null, "Cozinheira", 120.00);
 		Product washerwoman = new Product(null, "Lavadeira", 120.00);
@@ -137,7 +147,7 @@ public class MariaaApplication implements CommandLineRunner {
 		 // COMMIT NO BANCO 
 		stateRepository.saveAll(Arrays.asList(saoPaulo, minasGerais));
 		cityRepository.saveAll(Arrays.asList(diadema, campinas, uberlandia));
-		categoryRepository.saveAll(Arrays.asList(scheduled, noScheduled));
+		categoryRepository.saveAll(Arrays.asList(scheduled, noScheduled, cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8));
 		productRepository.saveAll(Arrays.asList(diarist, cooker, washerwoman, cleaningLady));
 		clientRepository.saveAll(Arrays.asList(mariaDaSilva));
 		addressRepository.saveAll(Arrays.asList(ruaFranca, avenidaMatos));
