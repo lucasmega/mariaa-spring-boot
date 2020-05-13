@@ -16,7 +16,12 @@ public class CategoryService {
 	private CategoryRepository categoryRepository;
 	
 	public Category find(Integer id) {
-		Optional<Category> obj = categoryRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Categoria de código: " + id + " não encontrada, Tipo: " + Category.class.getName()));
+		Optional<Category> object = categoryRepository.findById(id);
+		return object.orElseThrow(() -> new ObjectNotFoundException("Categoria de código: " + id + " não encontrada, Tipo: " + Category.class.getName()));
+	}
+	
+	public Category insert(Category object) {
+		object.setId(null);
+		return categoryRepository.save(object);
 	}
 }
