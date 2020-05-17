@@ -14,27 +14,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mariaa.app.domain.enums.PaymentStatus;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Payment implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	private Integer id;
 	private Integer paymentStatus;
-	
+
 	@JsonIgnore
 	@OneToOne
-	@JoinColumn(name="ORDER_ID")
+	@JoinColumn(name = "ORDER_ID")
 	@MapsId
 	private Order order;
-	
-	public Payment() { }
+
+	public Payment() {
+	}
 
 	public Payment(Integer id, PaymentStatus paymentStatus, Order order) {
 		super();
 		this.id = id;
-		this.paymentStatus = paymentStatus.getCode();
+		this.paymentStatus = paymentStatus == null ? null : paymentStatus.getCode();
 		this.order = order;
 	}
 
@@ -45,7 +46,7 @@ public abstract class Payment implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	// Start - ENUM implementation
 
 	public PaymentStatus getPaymentStatus() {
@@ -55,8 +56,8 @@ public abstract class Payment implements Serializable {
 	public void setPaymentStatus(PaymentStatus paymentStatus) {
 		this.paymentStatus = paymentStatus.getCode();
 	}
-	
-	//End - ENUM implementation
+
+	// End - ENUM implementation
 
 	public Order getOrder() {
 		return order;
@@ -90,6 +91,5 @@ public abstract class Payment implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
 }
