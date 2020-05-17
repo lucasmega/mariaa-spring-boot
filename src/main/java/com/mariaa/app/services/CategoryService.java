@@ -55,7 +55,7 @@ public class CategoryService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return categoryRepository.findAll(pageRequest);
 	}
-	
+
 	public Category fromDTO(CategoryDTO object) {
 		return new Category(object.getId(), object.getName());
 	}

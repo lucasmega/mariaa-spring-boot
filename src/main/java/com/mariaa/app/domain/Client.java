@@ -19,30 +19,31 @@ import com.mariaa.app.domain.enums.CustomerType;
 
 @Entity
 public class Client implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 	private String email;
 	private String document;
-	
+
 	private Integer customerType;
-	
-	@OneToMany(mappedBy="client")
+
+	@OneToMany(mappedBy = "client")
 	private List<Address> adresses = new ArrayList<>();
-	
+
 	@ElementCollection
-	@CollectionTable(name="PHONE")
-	private Set<String> phones = new HashSet<>(); 
-	
+	@CollectionTable(name = "PHONE")
+	private Set<String> phones = new HashSet<>();
+
 	@JsonIgnore
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy = "client")
 	private List<Order> order = new ArrayList<>();
-	
-	public Client( ) { }
+
+	public Client() {
+	}
 
 	public Client(Integer id, String name, String email, String document, CustomerType customerType) {
 		super();
@@ -50,7 +51,7 @@ public class Client implements Serializable {
 		this.name = name;
 		this.email = email;
 		this.document = document;
-		this.customerType = customerType.getCode();
+		this.customerType = customerType == null ? null : customerType.getCode();
 	}
 
 	public Integer getId() {
@@ -84,7 +85,7 @@ public class Client implements Serializable {
 	public void setDocument(String document) {
 		this.document = document;
 	}
-	
+
 	// Start - ENUM implementation
 
 	public CustomerType getCustomerType() {
@@ -94,7 +95,7 @@ public class Client implements Serializable {
 	public void setCustomerType(CustomerType customerType) {
 		this.customerType = customerType.getCode();
 	}
-	
+
 	// End - ENUM implementation
 
 	public List<Address> getAdresses() {
@@ -112,7 +113,7 @@ public class Client implements Serializable {
 	public void setPhones(Set<String> phones) {
 		this.phones = phones;
 	}
-	
+
 	public List<Order> getOrder() {
 		return order;
 	}
@@ -145,6 +146,5 @@ public class Client implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
 }
