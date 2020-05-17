@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.mariaa.app.domain.Category;
+import com.mariaa.app.dto.CategoryDTO;
 import com.mariaa.app.repositories.CategoryRepository;
 import com.mariaa.app.services.exceptions.DataIntegrityException;
 import com.mariaa.app.services.exceptions.ObjectNotFoundException;
@@ -53,5 +54,9 @@ public class CategoryService {
 	public Page<Category> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return categoryRepository.findAll(pageRequest);
+	}
+	
+	public Category fromDTO(CategoryDTO object) {
+		return new Category(object.getId(), object.getName());
 	}
 }
