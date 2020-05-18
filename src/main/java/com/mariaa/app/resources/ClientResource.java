@@ -1,5 +1,6 @@
 package com.mariaa.app.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mariaa.app.domain.Client;
 import com.mariaa.app.dto.ClientDTO;
+import com.mariaa.app.dto.CostumerDTO;
 import com.mariaa.app.services.ClientService;
 
 @RestController
@@ -28,6 +31,15 @@ public class ClientResource {
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Client obj = clientService.find(id);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody CostumerDTO dto) {
+		Client model = clientService.fromDTO(dto);
+		model = clientService.insert(model);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(model.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
