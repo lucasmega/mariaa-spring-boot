@@ -8,7 +8,10 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.mariaa.app.domain.Client;
+import com.mariaa.app.services.validation.ClientUpdate;
 
+
+@ClientUpdate
 public class ClientDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -54,8 +57,4 @@ public class ClientDTO implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
-	
-
 }
