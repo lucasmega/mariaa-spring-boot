@@ -2,21 +2,41 @@ package com.mariaa.app.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.mariaa.app.services.validation.ClientInsert;
+
+@ClientInsert
 public class CostumerDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=5, max=80, message="O tamanho deve ser entre 5 e 120 caracteres!")
 	private String name;
+	
+	@NotEmpty(message="Preenchimento obrigatório!")
+	@Email(message="E-mail inválido!")
 	private String email;
+	
+	@NotEmpty(message="Preenchimento obrigatório!")
 	private String document;
+	
 	private Integer customerType;
-
+	
 	private String street;
+	
 	private Integer number;
 	private String complement;
 	private String neighborhood;
+	
+	@NotEmpty(message="Preenchimento obrigatório!")
 	private String zipCode;
-
+	
+	@NotEmpty(message="Preenchimento obrigatório!")
 	private String mainphone;
 	private String telephone;
 	private String cellphone;

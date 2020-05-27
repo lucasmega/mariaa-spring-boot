@@ -11,7 +11,7 @@ import com.mariaa.app.domain.Order;
 import com.mariaa.app.services.OrderService;
 
 @RestController
-@RequestMapping(value="/pedidos")
+@RequestMapping(value="/requests")
 public class OrderResource {
 	
 	@Autowired
